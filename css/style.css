@@ -1,0 +1,127 @@
+:root {
+    --default-font: #eeeeee;
+    --bg-color: #c6c9a3;
+    --button-border-color: #332819;
+    --button-color: #a7905f;
+    --button-hover-color: #50452f;
+    --title-color: #5f5f5f;
+    --input-border-color: #b37928;
+    --input-border-hover-color: #4e330c;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+/* main.php file */
+#userSelectionWrapper {
+    width: 25%;
+    margin: 10px auto;
+    text-align: center;
+    border: 2px solid black;
+    padding: 50px 100px;
+    background-color: var(--bg-color);
+}
+
+.userSelectionButtons {
+    text-decoration: none;
+    color: var(--default-font);
+    cursor: pointer;
+    padding: 10px 25px;
+    border: 1px solid var(--button-border-color);
+    border-radius: 5px;
+    margin: 0px 5px;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: var(--button-color);
+}
+
+.userSelectionButtons:hover {
+    background-color: var(--button-hover-color);
+    transition: background-color .3s ease-in;
+}
+
+/* End of main.php file */
+
+
+/* Login and Register forms */
+
+.wrapper {
+    width: 25%;
+    margin: 10px auto;
+    text-align: center;
+    border: 2px solid black;
+    padding: 50px 100px;
+    background-color: var(--bg-color);
+}
+
+.title {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.smallText {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+#loginForm, #registerForm {
+    width: 100%;
+    padding: 5px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.formField {
+    padding: 10px 0px;
+}
+
+.formField label {
+    float: left;
+    width: 25%;
+    text-align: center;
+    padding: 5px;
+}
+
+.formField span {
+    font-size: 13px;
+}
+
+.formField .loginInput {
+    width: 50%;
+    text-align: center;
+    padding: 5px;
+    outline: none;
+    border: none;
+    background-color: inherit;
+    border-bottom: 1px solid var(--input-border-color);
+    text-align: left;
+}
+
+.formField .loginInput:focus,
+.formField .loginInput:hover {
+    border-bottom: 1px solid var(--input-border-hover-color);
+    transition: all .3s ease-in;
+}
+
+.formField .loginButton {
+    padding: 10px 25px;
+    margin-top: 15px;
+    text-transform: uppercase;
+    background-color: var(--button-color);
+    border: 1px solid var(--button-border-color);
+    border-radius: 5px;
+    color: var(--default-font);
+    cursor: pointer;
+}
+
+.formField .loginButton:hover {
+    background-color: var(--button-hover-color);
+    transition: background-color .3s ease-in;
+}
+
+#errorText {
+    color: red;
+}
+/* End of login and register forms */
