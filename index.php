@@ -8,6 +8,7 @@ if(isset($_GET["action"])) {
     $fileName = "controller/" . $_GET["action"] . ".php";
 }
 
+//Cia yra naujas pakeitimas
 
 //Klaidu laikimo kintamas
 $errorMessage = "";
