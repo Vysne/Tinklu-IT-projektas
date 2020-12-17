@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 2020 m. Grd 15 d. 23:58
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.2.31
+-- Generation Time: Dec 17, 2020 at 04:36 AM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.2.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,14 +24,14 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Sukurta duomenų struktūra lentelei `klientai`
+-- Table structure for table `klientai`
 --
 
 CREATE TABLE `klientai` (
   `kliento_nr` int(4) NOT NULL,
   `vardas` varchar(30) NOT NULL,
   `pavarde` varchar(30) NOT NULL,
-  `slaptazodis` varchar(30) NOT NULL,
+  `slaptazodis` varchar(255) NOT NULL,
   `adresas` varchar(50) NOT NULL,
   `saskaitos_nr` varchar(10) NOT NULL,
   `el_pastas` varchar(30) NOT NULL,
@@ -39,17 +39,43 @@ CREATE TABLE `klientai` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Sukurta duomenų kopija lentelei `klientai`
+-- Dumping data for table `klientai`
 --
 
 INSERT INTO `klientai` (`kliento_nr`, `vardas`, `pavarde`, `slaptazodis`, `adresas`, `saskaitos_nr`, `el_pastas`, `statusas`) VALUES
-(1129, 'Nijole', 'Pareigyte', '$2y$10$M0HafQWZaLVsS/Z31lkmZ.C', 'Laisves al. A45, Kaunas', 'LT4566825', 'NijoleP@gmail.com', 'klientas'),
-(1146, 'test3', 'test3', '$2y$10$REpXPwKsWHeUYelG0jfjluf', 'test3', 'test3', 'test3@gmail.com', 'klientas'),
-(3096, 'test', 'test2', '$2y$10$2q5Q3ht9We4bVqnmqqY0n.v', 'test g., Test', 'test145614', 'test@gmail.com', 'klientas'),
-(4856, 'test5', 'test5', '$2y$10$EIesRPSMb2EqBKbdyi83cup', 'test5', 'test5', 'test5@gmail.com', 'klientas'),
-(5249, 'test2', 'test1', '$2y$10$03YQDEZB/dKq0tkPx4zcFe7', 'test g., Test', 'test454648', 'test2@gmail.com', 'klientas'),
-(7319, 'Mantas', 'Vysniauskas', '$2y$10$IZaiHH41nW/ixM0Bu3YX6.g', 'Studentu g. 69, Kaunas', 'LT3215816', 'vysnius272@gmail.com', 'klientas'),
-(7521, 'Tomas', 'Dabrauskas', '$2y$10$XFzfXRzwCDa3Mvo1qSA0Eu9', 'Zirmunu g. 180, Jonava', 'LT21214', 'entuziastas@yahoo.com', 'klientas');
+(2337, 'Lina', 'Makstyte', '$2y$10$f4hJG4oBmR/BRx6DHnvLNOPAkBmnhj1fgb48FxhkLEBrBGRiTDlIC', 'Utena', 'LT12567845', 'makst@gmail.com', 'klientas'),
+(3095, 'Tadas', 'Belushis', '$2y$10$3rGLYAZca78org7SPUoFzuylSfb3C5o5pCHUKF2icPlIB3jR9uGdq', 'Kaunas', 'LT98653265', 'tasd@yahoo.com', 'klientas'),
+(6454, 'Karina', 'Krisko', '$2y$10$aFMEB4uL6QBLA0k.u3ybhOm56LS11JWJTPYij5ky45C/pv2nmuAMa', 'Vilnius', 'LT85857474', 'karina@gmail.com', 'buhalteris'),
+(9672, 'Mantas', 'Vyšniauskas', '$2y$10$OIfjiDRuWVMdm3PvHWyBruWALEKHVePw4a7hIJ2VsIB8pDJYrtQBC', 'Kaunas', 'LT56742584', 'mantutis@gmail.com', 'administratorius');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `saskaitos`
+--
+
+CREATE TABLE `saskaitos` (
+  `serijos_nr` int(11) NOT NULL,
+  `saskaitos_nr` varchar(30) NOT NULL,
+  `kliento_nr` int(11) NOT NULL,
+  `gavejas` varchar(30) NOT NULL,
+  `mokejimo_paskirtis` varchar(30) NOT NULL,
+  `kiekis` int(11) NOT NULL,
+  `data` date NOT NULL,
+  `suma` decimal(6,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `saskaitos`
+--
+
+INSERT INTO `saskaitos` (`serijos_nr`, `saskaitos_nr`, `kliento_nr`, `gavejas`, `mokejimo_paskirtis`, `kiekis`, `data`, `suma`) VALUES
+(1, 'LT9865326598', 2337, 'UAB \"Makentošas\"', 'Makiažas', 5, '2020-12-31', '159.00'),
+(2, 'LT7845124587', 2337, 'UAB \"Senukai\"', 'Buitinė technika', 2, '2021-01-31', '63.00'),
+(3, 'LT78451245', 2337, 'UAB \"Meirinda\"', 'Batai', 1, '2021-01-22', '56.00'),
+(4, 'LT5284621387', 2337, 'UAB \"Makendonas\"', 'Maistas', 20, '2021-02-24', '68.87'),
+(5, 'LT7852145214', 3095, 'UAB \"Maxima\"', 'Maisto prekės', 11, '2020-12-24', '78.45'),
+(6, 'LT2021542874', 3095, 'UAB \"Regitra\"', 'Vairuotojo pažymėjimas', 1, '2021-02-28', '15.89');
 
 --
 -- Indexes for dumped tables
@@ -60,6 +86,22 @@ INSERT INTO `klientai` (`kliento_nr`, `vardas`, `pavarde`, `slaptazodis`, `adres
 --
 ALTER TABLE `klientai`
   ADD PRIMARY KEY (`kliento_nr`);
+
+--
+-- Indexes for table `saskaitos`
+--
+ALTER TABLE `saskaitos`
+  ADD PRIMARY KEY (`serijos_nr`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `saskaitos`
+--
+ALTER TABLE `saskaitos`
+  MODIFY `serijos_nr` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

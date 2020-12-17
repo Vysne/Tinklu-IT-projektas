@@ -1,25 +1,45 @@
 <?php
-include "libraries/client.php";
 include "templates/login_tpl.php";
 
-if(isset($_POST['loginForm']))
-{
-    $klientoNr = $_POST['userNr'];
-    $slaptazodis = $_POST['userPass'];
+//Tikrinam ar Prisijungti mygtuka yra paspaustas
+if(isset($_POST["loginForm"])) {
 
-    $klientas = new Client($klientoNr, $slaptazodis);
+    //Tikrinam ar abu laukeliai yra ivesti
+    if(!(empty($_POST["klientoNr"]) || empty($_POST["slaptazodis"]))) {
 
-    if(!($duombaze->checkKlientoNr($klientoNr, "klientai"))) {
-        if($duombaze->checkPassword($klientoNr, $slaptazodis)) {
-            header("Location: index.php");
+        //Issaugojama viskas kas yra ivesta laukeliuose
+        $userData = array(
+            "kliento_nr" => Db::escape($_POST["klientoNr"]),
+            "slaptazodis" => Db::escape($_POST["slaptazodis"])
+        );
+
+        //Tikrinama ar egzistuoja ivestas kliento numeris
+        if(Db::checkKlientoNr($userData["kliento_nr"])) {
+            $data = Db::select("SELECT * FROM klientai WHERE kliento_nr = {$userData['kliento_nr']}")[0];
+            
+            if(checkPassword($userData["slaptazodis"], $data["slaptazodis"])) {
+                session_start();
+                $_SESSION["prisijunges"] = true;
+                $_SESSION["statusas"] = $data["statusas"];
+                $_SESSION["kliento_nr"] = $data["kliento_nr"];
+                header("Location: home.php");
+            }
+            else {
+                errorMsg("Neteisingas slaptažodis");
+            }
         }
         else {
-
+            errorMsg("Paskyra su pateiktu kliento numeriu neegzistuoja");
         }
+        
     }
     else {
-        echo "<script>alert('Paskyra su įvestu kliento numeriu neegzistuoja.')</script>";
+        errorMsg("Prašome įvesti prisijungimo duomenis");
     }
 }
 
+//Funkcija kuri tikrina ar ivestas teisingas slaptazodis
+function checkPassword($slaptazodis, $hashed) {
+    return password_verify($slaptazodis, $hashed);
+}
 ?>

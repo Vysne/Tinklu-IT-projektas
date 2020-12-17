@@ -4,7 +4,7 @@
     <meta charset="UTF-8"> 
     <title>Sąskaitų Sistema</title>
     <!-- Išorinis stiliaus failiukas -->
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
     <section id="pageContent">

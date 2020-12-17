@@ -1,17 +1,16 @@
 <?php
+include "config.php";
 include "libraries/database.php";
-$duombaze = new Database();
-$duombaze->setConnection('localhost', 'root', '', 'saskaitu_sistema');
 
 $fileName = "";
 if(isset($_GET["action"])) {
     $fileName = "controller/" . $_GET["action"] . ".php";
 }
 
+//Funkcija kuri ismes vartotojui error zinutes
+function errorMsg($message) {
+    echo "<script>alert('${message}');</script>";
+}
 
-//Klaidu laikimo kintamas
-$errorMessage = "";
-
-
-include "templates/main.php";
+include "templates/main_tpl.php";
 ?>

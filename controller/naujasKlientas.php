@@ -28,9 +28,7 @@ if(isset($_POST["registerButton"])) {
 
         //Tikrinama ar sekmingai irasyta i duomenu baze
         if(Db::query($sql)) {
-            session_start();
-            $_SESSION["kliento_nr"] = $userData["kliento_nr"];
-            header("Location: confirm.php");
+            errorMsg("Nauja paskyra sėkmnigai sukurta. Kliento Numeris - {$userData['kliento_nr']}");
         }
         else {
             errorMsg("Nepavyko prisiregistruoti. Bandykite dar karta");

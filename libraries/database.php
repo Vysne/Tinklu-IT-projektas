@@ -1,42 +1,68 @@
 <?php
 
-class Database {
-    protected $connection;
+//Klase kuri leis sistemai komunikuoti su duomenu baze
+class Db {
+    protected static $connection; //Kintamasis, kuris bus naudojamas komunikacijai
 
-    //Sukuria prisijungima prie duomenu bazes
-    public function setConnection($server, $user, $pass, $db) {
-        $this->connection = new mysqli($server, $user, $pass, $db);
+    //Sukuriamas rysys tarp duombazes ir svetaines
+    public static function connect() {
+        if(!isset(self::$connection)) {
+            self::$connection = new mysqli(config::DB_SERVER, config::DB_USER, config::DB_PASS, config::DB_NAME);
+        }
+        return self::$connection;
     }
 
-    //Naujo kliento irasymas i duomenu baze
-    public function insertNewClient($data, $lentele = "klientai") {
-        $sql = "INSERT INTO {$lentele} (`kliento_nr`, `vardas`, `pavarde`, `slaptazodis`, `adresas`, `saskaitos_nr`, `el_pastas`, `statusas`) 
-                VALUES ({$data['kliento_nr']}, '{$data['vardas']}', '{$data['pavarde']}', '{$data['slaptazodis']}', '{$data['adresas']}', '{$data['banksas_nr']}', '{$data['el_pastas']}', 'klientas');";
-        if($this->connection->query($sql)) {
-            return true;
-        }
-        else {
+    //Sutvarkomas inputas tam kad butu saugus naudoti SQL
+    public static function escape($string) {
+        $connection = Db::connect();
+        return mysqli_real_escape_string($connection, $string);
+    }
+
+    //SQL statement execution funckija
+    public static function query($sql) {
+        $connection = Db::connect();
+        $results = $connection->query($sql);
+        return $results;
+    }
+
+    //SELECT funkcija
+    public static function select($sql) {
+        $rows = array();
+        $result = Db::query($sql);
+        if($result === false) {
             return false;
         }
+        while($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+        return $rows;
     }
 
-    //Patikrina pateiktu duomenys, duomenu bazeje
-    public function checkKlientoNr($klientoNr, $lentele) {
-        $sql = "SELECT * FROM $lentele WHERE kliento_nr = $klientoNr";
-        if($result = $this->connection->query($sql)->num_rows > 0) {
-            return false;
+    //Sugeneruojamas unikalus kliento numeris
+    public static function generateNr() {
+        $klientoNr = rand(1000, 9999);
+        $result = Db::select("SELECT kliento_nr FROM klientai WHERE kliento_nr = ${klientoNr};");
+        while(count($result) > 0) {
+            if(count($result) == 0) {
+                return $klientoNr;
+            }
+            else {
+                $klientoNr = rand(1000, 9999);
+                $result = Db::select("SELECT kliento_Nr FROM klientai WHERE kliento_nr = ${klientoNr};");
+            }
         }
-        else {
+        return $klientoNr;
+    }
+
+    //Tikrina ar klientas su pateiktu numeriu egzistuoja
+    public static function checkKlientoNr($klientoNr) {
+        $sql = "SELECT * FROM klientai WHERE kliento_nr = {$klientoNr};";
+        $result = Db::select($sql);
+        if(count($result) > 0) {
             return true;
         }
-    }
-
-    //Patikrinti paskyros slaptazodi
-    public function checkPassword($klientoNr, $klientoSlaptazodis) {
-        $sql = "SELECT slaptazodis FROM klientai WHERE kliento_nr = {$klientoNr};";
-        $result = $this->connection->query($sql);
-        $data = $result->fetch_assoc();
-        return password_verify($klientoSlaptazodis, $data['slaptazodis']);
+        return false;
     }
 }
+
 ?>
